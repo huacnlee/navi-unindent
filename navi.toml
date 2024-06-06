@@ -1,0 +1,5 @@
+name = "unindent"
+version = "0.1.0"
+
+[dependencies]
+unindent = "0.1.0"

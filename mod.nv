@@ -1,0 +1,46 @@
+use std.io.StringBuffer;
+
+fn count_spaces(line: string): int {
+    let count = 0;
+    let chars = line.chars();
+    while (let c = chars.next()) {
+        if (c != ' ' && c != "\t".chars().next().unwrap()) {
+            return count;
+        }
+
+        count += 1;
+    }
+    return -1;
+}
+
+/// Remove leading whitespace from each line in a string.
+pub fn unindent(input: string): string {
+    let buf = StringBuffer.new();
+    const lines = input.split("\n");
+    const spaces = lines.map(|line| count_spaces(line)).filter(|n| n >= 0).min().unwrap_or(0);
+    let i = 0;
+    for (let line in lines) {
+        if (line.len() > spaces) {
+            buf.push(line.slice(spaces, line.len()));
+        } else {
+            buf.push(line);
+        }
+        if (i < lines.len() - 1) {
+            buf.push("\n");
+        }
+        i += 1;
+    }
+
+    return buf.to_string();
+}
+
+test "count_spaces" {
+    assert_eq count_spaces("  hello"), 2;
+    assert_eq count_spaces("\t\t  world"), 4;
+    assert_eq count_spaces("second line."), 0;
+}
+
+test "unindent" {
+    assert_eq unindent("  hello\n  world\n"), "hello\nworld\n";
+    assert_eq unindent("  hello\n\t\t  world\n\tsecond line."), " hello\n\t  world\nsecond line.";
+}

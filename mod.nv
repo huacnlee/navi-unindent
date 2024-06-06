@@ -14,6 +14,13 @@ fn count_spaces(line: string): int {
 }
 
 /// Remove leading whitespace from each line in a string.
+///
+/// ```nv
+/// use unindent.unindent;
+///
+/// assert_eq unindent("  hello\n  world\n"), "hello\nworld\n";
+/// assert_eq unindent("  hello\n\t\t  world\n\tsecond line."), " hello\n\t  world\nsecond line.";
+/// ```
 pub fn unindent(input: string): string {
     let buf = StringBuffer.new();
     const lines = input.split("\n");
